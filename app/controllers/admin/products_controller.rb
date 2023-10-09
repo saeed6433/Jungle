@@ -1,4 +1,6 @@
+require "dotenv"
 class Admin::ProductsController < ApplicationController
+  http_basic_authenticate_with name: ENV['AUTH_USERNAME'].to_s, password: ENV['AUTH_PASSWORD'].to_s
 
   def index
     @products = Product.order(id: :desc).all
@@ -12,7 +14,7 @@ class Admin::ProductsController < ApplicationController
     @product = Product.new(product_params)
 
     if @product.save
-      redirect_to [:admin, :products], notice: 'Product created!'
+      redirect_to [:admin, :products], notice: 'Product saved!'
     else
       render :new
     end
